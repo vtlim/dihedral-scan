@@ -1,0 +1,154 @@
+#############################################################
+## JOB DESCRIPTION                                         ##
+#############################################################
+
+# Energy minimize 2GBI, tautomer 2, in vacuo
+
+#############################################################
+## ADJUSTABLE PARAMETERS                                   ##
+#############################################################
+
+structure          ../../gbi_neutral.psf
+coordinates        dihed-5.pdb
+set output         dihed-5
+
+### Set temperature only if starting a new run. If continuing,
+### comment temperature and uncomment binCoordinates and binVelocities
+set temperature    300
+
+
+#############################################################
+## SIMULATION PARAMETERS                                   ##
+#############################################################
+
+### Input
+paraTypeCharmm      on
+parameters          /DFS-L/DATA/mobley/limvt/toppar/cgenff4.0/par_all36_cgenff.prm
+#parameters          /home/limvt/Documents/toppar/cgenff4.0/par_all36_cgenff.prm
+parameters          ../../gbi_neutral.str
+
+### NOTE: Do not set the initial velocity temperature if you 
+### have also specified a .vel restart file!
+
+# Change to {0} for new job, {1} for continuing a job
+if {0} {
+set inputname      ../02_100ps/npt_eq01
+binCoordinates     $inputname.coor 
+binVelocities      $inputname.vel  ;# remove "temperature" entry if you use this!
+extendedSystem     $inputname.xsc
+}
+
+# Change to {1} for new job, {0} for restart - opp of above
+if {1} {
+temperature         $temperature
+
+cellBasisVector1 83. 0.  0.
+cellBasisVector2 0. 80.  0.
+cellBasisVector3 0. 0.  84.
+}
+
+
+### Periodic Boundary Conditions
+### NOTE: Do not set the periodic cell basis if you have also 
+### specified an .xsc restart file!
+
+
+### Force-Field Parameters
+exclude             scaled1-4
+1-4scaling          1.0
+cutoff              12.0
+switching           on
+switchdist          10.0
+pairlistdist        16.0
+vdwForceSwitching   yes  
+
+### Integrator Parameters
+timestep            2.0  ;# 2fs/step
+rigidBonds          all  ;# needed for 2fs steps
+nonbondedFreq       1
+fullElectFrequency  2  
+stepspercycle       20
+
+### PME (for full-system periodic electrostatics)
+PME                 on
+PMEProcessors	    6
+PMEGridSpacing	    1.0
+
+### Constant Temperature Control
+langevin            on    ;# do langevin dynamics
+langevinDamping     1     ;# damping coefficient (gamma) of 5/ps
+langevinTemp        $temperature
+
+### Constant Pressure Control (variable volume)
+#useGroupPressure      yes ;# needed for 2fs steps
+#useFlexibleCell       yes  ;# no for water box, yes for membrane
+#useConstantArea       yes  ;# no for water box, yes for membrane
+langevinPiston        off
+#langevinPistonTarget  1.0 ;# in bar
+#langevinPistonPeriod  200
+#langevinPistonDecay   100
+#langevinPistonTemp    $temperature
+
+### Output Files 
+outputname	   $output
+outputEnergies     1000
+outputTiming	   1000 
+outputPressure     1000
+
+restartname	   $output
+restartfreq        100000     
+
+DCDfile		   $output.dcd
+DCDfreq            100000
+DCDUnitCell	   yes
+
+XSTfile		   $output.xst
+xstFreq            100000
+
+
+#############################################################
+## EXTRA PARAMETERS                                        ##
+#############################################################
+
+### Put here any custom parameters that are specific to 
+### this job (e.g., SMD, TclForces, etc...)
+
+
+### Electric Field (units of kcal/(mol A e)
+#eFieldOn     	   yes
+#eField		   0. 0. 0.14  ;# depolarizing field (kcal/(mol A e))
+
+### Fixed Atoms Constraint (set PDB beta-column to 1 for fixed)
+#fixedAtoms          on
+#fixedAtomsFile      lipidMin-54.fix
+#fixedAtomsCol       B
+#fixedAtomsForces    on
+
+### Harmonic Restraints
+#constraints	     on
+#consref       	     hHv1_open_wGBI.pdb
+#conskfile     	     harm_const.cnst
+#conskcol      	     B
+
+### Dihedral Restraints
+extrabonds	     on
+extraBondsFile   dihed-5.cnst
+
+
+#margin	       	     3
+
+### TCL Forces
+#tclforces	     on
+#tclforcesscript     forces.tcl
+
+### Assign new charges to atoms
+#reloadCharges  	     temp_charges.txt
+##WARNING: the above command gives errors in NAMD!!!
+
+#############################################################
+## EXECUTION SCRIPT                                        ##
+#############################################################
+
+### Minimization
+minimize            10000
+
