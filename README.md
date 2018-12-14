@@ -81,14 +81,14 @@ Subdirectory names listed in square brackets on each step.
 
 12. Run the QM and MM jobs.
 
-13. Analyze scans.
+13. [`./02_analysis/02_parse-diheds`] Analyze scans.
     * Get NAMD dihedral output angle from .coor files.
         * `vmdt -e ../12_analysis/get_namd_diheds.tcl -args /DFS-B/DATA/mobley/limvt/3_neutral/11_setup-namd/psfgen-03/gbin_psfgen.psf 7 8 9 10`
         * May want to sort resulting dat file (in vim: `:sort n`).
     * Compute/draw the profiles.
         * `python dihed_parser.py --qdir /path/to/qm_results/ --qfile output.dat --mdir /path/to/mm_results/ --mfile minimize.out --show --save`
 
-14. View results.
+14. [`./02_analysis/03_view`] View results.
     * TODO: add view scripts
 
 
