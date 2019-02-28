@@ -156,8 +156,10 @@ def subtract_restraint(filename, fConst):
 
     Parameters
     ----------
-    filename: name of the file with actual, measured dihedral angles from minimization
-    fConst: value of the spring constant k declared in NAMD extra bonds file
+    filename : string
+        filename with actual, measured dihedral angles from minimization
+    fConst: float
+        value of the spring constant k declared in NAMD extra bonds file
 
     Returns
     -------
@@ -188,8 +190,8 @@ def subtract_restraint(filename, fConst):
         xact[0] = xact[0] - 360
 
     # Get the restraint energies.
-    np.set_printoptions(suppress=True,precision=2)
     rpe = float(fConst)*np.subtract(xact,xref)**2.
+    np.set_printoptions(suppress=True,precision=2)
     for k in range(xact.shape[0]):
         print(xact[k], xref[k], rpe[k])
     return xact, rpe
@@ -249,7 +251,7 @@ def main(**kwargs):
     rel_ene_qm = [627.5095*(i - minE) for i in ene_qm] # convert Hartrees -> kcal/mol
 
     pdict = {}
-    pdict['title'] = "Dihedral Scan for 2GBI Tautomer #2 - QM"
+    pdict['title'] = "Dihedral Scan for 2GBI Neutral - QM"
     pdict['figname'] = "plot_relDihed-qm.png"
     plot_dihed( ang_qm, rel_ene_qm, pdict, opt['save'], opt['show'] )
 
@@ -257,28 +259,27 @@ def main(**kwargs):
     ### MM
     if not opt['qm_only']:
         ang_mm, ene_mm = cat_mm(opt['mdir'], opt['mfile'])
-        xact, rpe = subtract_restraint(opt['mdir']+'/diheds-from-coor.dat',opt['fConst'])
 
         ### Subtract actual energies minus restraint energies.
-        rs_ene_mm = np.subtract(ene_mm,rpe)
+        if opt['fConst'] is not None:
+            xact, rpe = subtract_restraint(opt['mdir']+'/diheds-from-coor.dat',opt['fConst'])
+            ene_mm = np.subtract(ene_mm,rpe)
 
         ### Take relative energies from minimum.
         minE = min(ene_mm)
         rel_ene_mm = [i - minE for i in ene_mm]
-        minE = min(rs_ene_mm)
-        rel0_ene_mm = [i - minE for i in rs_ene_mm]
 
         ### Plot MM results.
-        pdict['title'] = "Dihedral Scan for 2GBI Tautomer #2 - MM"
+        pdict['title'] = "Dihedral Scan for 2GBI Neutral - MM"
         pdict['figname'] = "plot_relDihed-mm.png"
         plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'] )
 
         ### Plot both QM and MM results.
-        pdict['title'] = "Dihedral Scan for 2GBI Tautomer #2"
+        pdict['title'] = "Dihedral Scan for 2GBI Neutral"
         pdict['figname'] = "plot_relDihed.png"
         pdict['label1'] = "MM (NAMD, CGenFF)"      # MM line label
-        #pdict['label2'] = "QM (Psi4, MP2/6-31G*)"  # QM line label
-        pdict['label2'] = "QM (Psi4, MP2/def2-tzvp)"  # QM line label
+        pdict['label2'] = "QM (Psi4, MP2/6-31G*)"  # QM line label
+        #pdict['label2'] = "QM (Psi4, MP2/def2-tzvp)"  # QM line label
         pdict['color1'] = 'b'      # MM line color
         pdict['color2'] = 'r'      # QM line color
         plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'], ang_qm, rel_ene_qm)
@@ -298,7 +299,7 @@ def main(**kwargs):
                 writeout.write("\n\t----------------------------")
                 writeout.write("\nangle_ref\tangle_act\ttotalE\t\trestrE\t(tot-restr)\torigTotE (rel)")
                 for i in range(len(rel_ene_mm)):
-                    writeout.write("\n\t%.2f\t%f\t%.3f\t%.3f\t%.3f\t%.3f" % (ang_mm[i], xact[i], ene_mm[i], rpe[i], rs_ene_mm[i],rel_ene_mm[i]))
+                    writeout.write("\n\t%.2f\t%f\t%.3f\t%.3f\t%.3f\t%.3f" % (ang_mm[i], ang_mm[i], ene_mm[i], rpe[i], rs_ene_mm[i],rel_ene_mm[i]))
     else:
         print("!!! WARNING: {} already exists. Skip writing summary results.".format('summary.dat'))
 
