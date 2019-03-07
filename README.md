@@ -1,9 +1,46 @@
 
 # Light validation of small molecule force field
-Last updated: Dec 13 2018  
-Subdirectory names listed in square brackets on each step.
+Last updated: Mar 07 2019  
+This instructions list subdirectory names for each step for easier locating of relevant files.
 
-## Force field generation
+## Contents
+Brief high-level overview of contents in this repository.
+```
+.
+├── 01_setup
+│   ├── 01_setup-dihedrals.tcl
+│   ├── 02_pdbPsiInput.sh
+│   ├── 03_NAMDinput.sh
+│   ├── minimize.inp
+│   └── psfgen
+│       ├── psfgen-02
+│       ├── psfgen-03
+│       └── psfgen.tcl
+├── 02_analysis
+│   ├── 01_atom-labels
+│   ├── 02_parse-diheds
+│   └── view_namd_scan.tcl
+├── dihed_namd
+│   ├── 0
+│   └── 5
+├── dihed_psi4
+│   ├── 0
+│   │   ├── dihed-0.pdb
+│   │   └── mp2-631Gd
+│   └── 5
+│       ├── dihed-5.pdb
+│       └── mp2-631Gd
+├── init_namd
+├── init_psi4
+├── LICENSE
+├── psf_from_charmm
+├── README.md
+└── slurm_scripts
+
+19 directories, 65 files
+```
+
+## I. Force field generation
 
 1. Drew structure in MarvinSketch.
     * Saved as Tripos mol2 for CGenFF.
@@ -23,13 +60,18 @@ Subdirectory names listed in square brackets on each step.
 
 4. [`./01_setup/psfgen/`] Generate PSF file for NAMD.
     * Command: `vmd -dispdev none gbi-neutral-cgenff.pdb -e psfgen.tcl > psfgen.out`
+    * NOTE: See `psf_from_charmm` directory in this repo for an alternate approach.
 
 5. [`./02_analysis/01_atom-labels/`] Label atom numbers in VMD. Generate image to refer to later when altering atom types or choosing atoms for dihedral scan.
     * Modify displayed label at Graphics > Labels > Properties > Format to `%a::%t`
     * Did this one by one but probably could write Tcl script if larger ligand, based on `label textformat Atoms 15 { %a::%t  }`
     * Do not render as (Tachyon, Postscript) since messes up label location. Cluster super slow, so I just screenshotted.
 
-## Comparison of QM and MM minimum energy structures
+## II. Comparison of QM and MM minimum energy structures
+NOTE: This section walks through NAMD minimization before QM minimization.
+If you want QM calcns on your input structure to CGenFF, the `init_psi4/opt_mmff.py` script may be helpful. 
+It uses the Quanformer package: <https://github.com/MobleyLab/quanformer>.
+However, instead of installing the package, you can download the relevant modules from Github and call similar to [here](https://github.com/vtlim/off_psi4/blob/master/examples/frozen_atoms/example.py).
 
 6. [`./init_namd/`] Minimize in NAMD. 
     * Do this prior to full scan bc starting Marvin coordinates are garbage.
@@ -46,11 +88,14 @@ Subdirectory names listed in square brackets on each step.
     * Directly lifted coordinates from previous step for Psi4 input file. 
 
 9. Compare minimized structures from steps 6 and 8 in VMD.
-    * If you have to change atom types, this will affect psf file so remember to regenerate psf file (step 4).
-    * For some reason when I added impropers in the str file, it wasn't recognized by psfgen. So I added the atom numbers to psf file manually and updated subheader value to 4.
+    * Based on agreement of minima structures, you may need to change atom types. In that case, remember to regenerate the psf file (step 4).
+    * When I added improper terms in str file, it wasn't recognized by psfgen. So I modified the generated PSF directly.
+        * In the `2 !NIMPHI: impropers` subheading, I added the atom numbers for new impropers (4 atoms/improper).
+        * Also incremented subheader value next to NIMPHI by number of impropers added.
+        * See example in `01_setup/psfgen/` comparing the PSF in `psfgen-02` and `psfgen-03` .
     * Also had to fix some of the atom name columns in the last column of generated PDB file bc some were missing.
 
-## Comparison of QM and MM dihedral scan profiles
+## III. Comparison of QM and MM dihedral scan profiles
 
 10. Analyze molecule to prepare for dihedral scan.
     * Identify atoms to be rotated.

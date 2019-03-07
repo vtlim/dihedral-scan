@@ -1,0 +1,99 @@
+PSF EXT
+
+       4 !NTITLE
+ REMARKS original generated structure x-plor psf file
+ REMARKS topology /DFS-L/DATA/mobley/limvt/toppar/cgenff4.0/top_all36_cgenff.rtf 
+ REMARKS topology ../../cgenff/gbi-neutral-02.str 
+ REMARKS segment GBIN { first NONE; last NONE; auto angles dihedrals }
+
+      22 !NATOM
+         1 GBIN     1        GBIN     C1       CG2R61  -0.370000       12.0110           0
+         2 GBIN     1        GBIN     C2       CG2R61  -0.229000       12.0110           0
+         3 GBIN     1        GBIN     C3       CG2R61  -0.195000       12.0110           0
+         4 GBIN     1        GBIN     C4       CG2R61  -0.324000       12.0110           0
+         5 GBIN     1        GBIN     C5       CG2RC0   0.155000       12.0110           0
+         6 GBIN     1        GBIN     C6       CG2RC0   0.450000       12.0110           0
+         7 GBIN     1        GBIN     N1       NG2R51  -0.284000       14.0070           0
+         8 GBIN     1        GBIN     N2       NG2R50  -0.729000       14.0070           0
+         9 GBIN     1        GBIN     C7       CG2R53   0.388000       12.0110           0
+        10 GBIN     1        GBIN     N3       NG2D1   -0.454000       14.0070           0
+        11 GBIN     1        GBIN     C8       CG2N1    0.547000       12.0110           0
+        12 GBIN     1        GBIN     N4       NG321   -0.603000       14.0070           0
+        13 GBIN     1        GBIN     N5       NG2D1   -0.907000       14.0070           0
+        14 GBIN     1        GBIN     H1       HGR61    0.250000        1.0080           0
+        15 GBIN     1        GBIN     H2       HGR61    0.196000        1.0080           0
+        16 GBIN     1        GBIN     H3       HGR61    0.196000        1.0080           0
+        17 GBIN     1        GBIN     H4       HGR61    0.195000        1.0080           0
+        18 GBIN     1        GBIN     H5       HGP1     0.321000        1.0080           0
+        19 GBIN     1        GBIN     H6       HGP1     0.368000        1.0080           0
+        20 GBIN     1        GBIN     H7       HGPAM2   0.330000        1.0080           0
+        21 GBIN     1        GBIN     H8       HGPAM2   0.330000        1.0080           0
+        22 GBIN     1        GBIN     H9       HGP1     0.369000        1.0080           0
+
+      23 !NBOND: bonds
+         1         6         1         2         1        14         2         3
+         2        15         3         4         3        16         4         5
+         4        17         5         6         6         8         7         5
+         7         9         7        18         8         9         9        10
+        10        11        10        19        11        13        11        12
+        12        20        12        21        13        22
+
+      35 !NTHETA: angles
+         1         6         8         1         6         5         1         2        15
+         1         2         3         2         3        16         2         3         4
+         2         1        14         3         4        17         3         4         5
+         3         2        15         4         5         7         4         5         6
+         4         3        16         5         7        18         5         7         9
+         5         6         8         5         4        17         6         5         7
+         6         1        14         6         1         2         7         9        10
+         8         9        10         8         9         7         9        10        19
+         9        10        11         9         8         6         9         7        18
+        10        11        12        10        11        13        11        13        22
+        11        12        21        11        12        20        11        10        19
+        13        11        12        20        12        21
+
+      50 !NPHI: dihedrals
+         1         6         5         4         1         6         5         7
+         1         6         8         9         1         2         3         4
+         1         2         3        16         2         3         4         5
+         2         3         4        17         2         1         6         5
+         2         1         6         8         3         4         5         6
+         3         4         5         7         3         2         1         6
+         3         2         1        14         4         5         6         8
+         4         5         7         9         4         5         7        18
+         4         3         2        15         5         7         9         8
+         5         7         9        10         5         6         1        14
+         5         6         8         9         5         4         3        16
+         6         8         9         7         6         8         9        10
+         6         5         4        17         6         5         7         9
+         6         5         7        18         6         1         2        15
+         7         9        10        11         7         9        10        19
+         7         5         4        17         7         5         6         8
+         8         9         7        18         8         9        10        11
+         8         9        10        19         8         6         1        14
+         9        10        11        13         9        10        11        12
+        10        11        13        22        10        11        12        20
+        10        11        12        21        10         9         7        18
+        12        11        10        19        12        11        13        22
+        13        11        10        19        13        11        12        20
+        13        11        12        21        14         1         2        15
+        15         2         3        16        16         3         4        17
+
+       2 !NIMPHI: impropers
+         9         8         7        10        11        13        10        12
+
+       0 !NDON: donors
+
+
+       0 !NACC: acceptors
+
+
+       0 !NNB
+
+         0         0         0         0         0         0         0         0
+         0         0         0         0         0         0         0         0
+         0         0         0         0         0         0
+
+       1       0 !NGRP
+         0         0         0
+
