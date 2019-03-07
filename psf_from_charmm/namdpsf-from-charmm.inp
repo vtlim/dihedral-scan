@@ -1,0 +1,60 @@
+! ------------------------------------------------------
+! Purpose:  Use CHARMM to generate NAMD psf/pdb
+! Reason:   VMD does not support lone pairs for latest CGenFF
+! Usage:    input (1) CGenFF .str file, (2) PDB file on two lines, (3) lone pair line from .str, (4) output PSF and PDB files
+! Call:     charmm -i namdpsf-from-charmm.inp > psfgen.out
+! 
+! Notes:
+!  - VTL couldn't read stream file directly bc issues with lone pair so separated .str to .rtf topology and .prm parameters with lone pair specified in this script.
+!  - This assumes you already have all coordinates, including hydrogens, else would need hbuild, etc.
+! ------------------------------------------------------
+
+
+! ------------------------------------------------------
+! read in cgenff topology and parameters
+! can't read in from directory mixing upper/lower case in path
+! ------------------------------------------------------
+read  rtf card name top_all36_cgenff.rtf
+read para card flex name par_all36_cgenff.prm
+
+! ------------------------------------------------------
+! read in cgenff small molecule force field
+! manually separate these to .rtf and .prm files
+! VTL couldn't read stream file directly bc issues with lone pair,
+!   "read param card flex append", asterisked lines;
+!   stream ./up/cgenff/gbi_chloro-00.str
+! ------------------------------------------------------
+read rtf card append name ./up/cgenff/gbi_chloro-00.rtf
+read para card flex append name ./up/cgenff/gbi_chloro-00.prm
+
+! ------------------------------------------------------
+! read coordinates from PDB file
+! be sure to check pdb bc picky, e.g., ATOM instead of HETATM; needs END line
+! order matters: read sequ before generate before coordinates
+! ------------------------------------------------------
+read sequ pdb resi segi gbic name ./up/init_psi4/clgbi_up.pdb
+gene gbic
+read coor pdb name ./up/init_psi4/clgbi_up.pdb resi
+ 
+! ------------------------------------------------------
+! build lone pair with undefined coordinates
+! the dash at end of lonepair line means continue to next line
+! ------------------------------------------------------
+LONEPAIR COLI LP1    Cl1    C6     DIST 1.6400 SCAL 0.0 -
+    sele type LP1 END sele type Cl1 END sele type C6 END
+
+! ------------------------------------------------------
+! copy the contents of the main set into the comp set
+! ------------------------------------------------------
+coor copy comp
+coor shake sele type LP1 end
+lonepair print
+
+! ------------------------------------------------------
+! generate and write out psf
+! xplor for NAMD-suitable PSF
+! leave a blank line at end of file
+! ------------------------------------------------------
+write psf card xplor unit 1 name test.psf
+write coor pdb unit 1 name test.pdb
+

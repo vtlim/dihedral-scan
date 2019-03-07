@@ -1,0 +1,203 @@
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+           (CHARMM) - Developmental Version 40b2   February 15, 2016            
+                                    849ef4e                                     
+       Copyright(c) 1984-2014  President and Fellows of Harvard College
+                              All Rights Reserved
+     Current operating system: Linux-3.10.0-862.9.1.el7.x86_64(x86_64)@gplo     
+                 Created on  2/28/19 at 14:35:45 by user: limvt       
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL>  
+ RDTITL> No title read.
+
+      ***** LEVEL  1 WARNING FROM <RDTITL> *****
+      ***** Title expected.
+      ******************************************
+      BOMLEV (  0) IS NOT REACHED. WRNLEV IS  5
+
+  
+ CHARMM>     
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! read in cgenff topology and parameters
+ CHARMM>    ! can't read in from directory mixing upper/lower case in path
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    read  rtf card name top_all36_cgenff.rtf
+ VOPEN> Attempting to open::top_all36_cgenff.rtf::
+ MAINIO> Residue topology file being read from unit  90.
+ TITLE> *  --------------------------------------------------------------------------  *
+ TITLE> *          CGENFF: TOPOLOGY FOR THE CHARMM GENERAL FORCE FIELD V. 4.0          *
+ TITLE> *                    FOR SMALL MOLECULE DRUG DESIGN                            *
+ TITLE> *  --------------------------------------------------------------------------  *
+ TITLE> *
+
+ DRUDES PARTICLES WILL BE GENERATED AUTOMATICALLY FOR ALL ATOMS WITH NON-ZERO ALPHA
+ Thole-type dipole screening, Slater-Delta shape {S(u) = 1 - (1+u/2)*exp(-u)}, default radius =  1.300000
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    read para card flex name par_all36_cgenff.prm
+ VOPEN> Attempting to open::par_all36_cgenff.prm::
+
+          PARAMETER FILE BEING READ FROM UNIT 90
+ TITLE> *  --------------------------------------------------------------------------  *
+ TITLE> *         CGENFF: PARAMETERS FOR THE CHARMM GENERAL FORCE FIELD V. 4.0         *
+ TITLE> *                    FOR SMALL MOLECULE DRUG DESIGN                            *
+ TITLE> *  --------------------------------------------------------------------------  *
+ TITLE> *  2016/8: IF PROTEIN, NUCLEIC ACID AND CARBOHYDRATE TOPOLOGY AND PARAMETER FILES
+ TITLE> *  ARE NOT READ PRIOR TO THE CGENFF FILES "WARNING: ATOMS IN NBFIX ' errors will
+ TITLE> *  BE ENCOUNTERED.  THESE CAN BE PASSED BY SETTING BOMLEV ( -2) PRIOR TO READING
+ TITLE> *  THIS FILE. IN ADDITION, WHEN GENERATING AROMATIC HALOGENS (CL, BR, I) WITH
+ TITLE> *  PRE C41B/C42A VERSIONS OF CHARMM "MISSING PARAMETER" ERRORS WILL BE
+ TITLE> *  ENCOUNTERED THAT ALSO REQUIRE SETTING BOMLEV ( -2).
+ TITLE> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! read in cgenff small molecule force field
+ CHARMM>    ! manually separate these to .rtf and .prm files
+ CHARMM>    ! VTL couldn't read stream file directly bc issues with lone pair,
+ CHARMM>    !   "read param card flex append", asterisked lines;
+ CHARMM>    !   stream ./up/cgenff/gbi_chloro-00.str
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    read rtf card append name ./up/cgenff/gbi_chloro-00.rtf
+ VOPEN> Attempting to open::./up/cgenff/gbi_chloro-00.rtf::
+ MAINIO> Residue topology file being read from unit  90.
+ TITLE> 36 1
+ RDTITL> No title read.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    read para card flex append name ./up/cgenff/gbi_chloro-00.prm
+ VOPEN> Attempting to open::./up/cgenff/gbi_chloro-00.prm::
+
+          PARAMETER FILE BEING READ FROM UNIT 90
+ TITLE>  
+ RDTITL> No title read.
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! read coordinates from PDB file
+ CHARMM>    ! be sure to check pdb bc picky, e.g., ATOM instead of HETATM; needs END line
+ CHARMM>    ! order matters: read sequ before generate before coordinates
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    read sequ pdb resi segi gbic name ./up/init_psi4/clgbi_up.pdb
+ VOPEN> Attempting to open::./up/init_psi4/clgbi_up.pdb::
+ **** Warning ****  The following extraneous characters
+ were found while command processing in CHARMM
+ RESI
+ MAINIO> Sequence information being read from unit  90.
+ TITLE>  *
+Reading sequence for SEGID GBIC    
+
+          RESIDUE SEQUENCE --     1 RESIDUES
+          GBIC
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    gene gbic
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ GENPSF> Segment   1 has been generated. Its identifier is GBIC.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =        1
+         Number of atoms         =       24   Number of groups     =        1
+         Number of bonds         =       24   Number of angles     =       37
+         Number of dihedrals     =       52   Number of impropers  =        2
+         Number of cross-terms   =        0
+         Number of HB acceptors  =        0   Number of HB donors  =        0
+         Number of NB exclusions =        0   Total charge =    1.00000
+ QXFORM> Expanded format used.
+         More than 4 character atom type used.
+  
+ CHARMM>    read coor pdb name ./up/init_psi4/clgbi_up.pdb resi
+ VOPEN> Attempting to open::./up/init_psi4/clgbi_up.pdb::
+  read CHARMM-pdb format
+          SPATIAL COORDINATES BEING READ FROM UNIT 90
+ TITLE>  *
+ ** WARNING ** After reading, there are no coordinates for selected atom:    24     1 GBIC LP1 
+
+ ** A total of     1 selected atoms have no coordinates
+ *** LEVEL  2 WARNING *** BOMLEV IS    0
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! build lone pair with undefined coordinates
+ CHARMM>    ! the dash at end of lonepair line means continue to next line
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    LONEPAIR COLI LP1    Cl1    C6     DIST 1.6400 SCAL 0.0 -
+ CHARMM>        sele type LP1 END sele type Cl1 END sele type C6 END
+ SELRPN>      1 atoms have been selected out of     24
+ SELRPN>      1 atoms have been selected out of     24
+ SELRPN>      1 atoms have been selected out of     24
+ **** Warning ****  The following extraneous characters
+ were found while command processing in CHARMM
+ LP1 CL1 C6
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! copy the contents of the main set into the comp set
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    coor copy comp
+ SELECTED COORDINATES COPIED TO THE COMPARISON SET.
+
+
+ **** WARNING **** FOR THIS OPERATION, THERE WERE    1 MISSING COORDINATES
+
+  
+ CHARMM>    coor shake sele type LP1 end
+ SELRPN>      1 atoms have been selected out of     24
+ SELECTED COORDINATES CONSTRAINED IN THE MAIN SET.
+
+  
+ CHARMM>    lonepair print
+LONEPR:  Number of lone-pairs:    1  Number of host pointers:    3
+    1      Number of hosts:    2  Host pointer:    1
+          Atom pointers:   24   14   10
+          Weight option: GEOM  Values:     1.64000     0.00000     0.00000
+          Number of atoms flagged as lonepairs:       1
+SEGId RESId RESName  .. TYPEs ..
+ GBIC     1        GBIC LP1     
+  
+ CHARMM>     
+  
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    ! generate and write out psf
+ CHARMM>    ! xplor for NAMD-suitable PSF
+ CHARMM>    ! leave a blank line at end of file
+ CHARMM>    ! ------------------------------------------------------
+ CHARMM>    write psf card xplor unit 1 name test.psf
+ VOPEN> Attempting to open::test.psf::
+ RDTITL> WRITE COOR PDB UNIT 1 NAME TEST.PDB
+ RDTITL> No title read.
+ VCLOSE: Closing unit    1 with status "KEEP"
+  
+ CHARMM>    write coor pdb unit 1 name test.pdb
+ VOPEN> Attempting to open::test.pdb::
+ RDTITL>  
+ RDTITL> No title read.
+  Write CHARMM-pdb format
+ VCLOSE: Closing unit    1 with status "KEEP"
+  
+ CHARMM>     
+  
+$$$$$$  New timer profile $$$$$
+   Shake time                      0.00 Other:            0.00
+ Total time                      0.77 Other:            0.77
+
+                    NORMAL TERMINATION BY END OF FILE
+                    MOST SEVERE WARNING WAS AT LEVEL  2
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.77  SECONDS 
+                         CPU TIME:     0.71  SECONDS 

@@ -1,0 +1,48 @@
+ATOM      1 N1   GBICX   1       5.137   0.543   0.000  1.00 20.00      GBIC N
+ATOM      2 C1   GBICX   1       3.803   0.679   0.000  1.00 20.00      GBIC C
+ATOM      3 N2   GBICX   1       3.225   1.867   0.000  1.00 20.00      GBIC N
+ATOM      4 N3   GBICX   1       3.045  -0.445   0.000  1.00 20.00      GBIC N
+ATOM      5 C2   GBICX   1       1.639  -0.465   0.000  1.00 20.00      GBIC C
+ATOM      6 N4   GBICX   1       0.946  -1.639   0.000  1.00 20.00      GBIC N
+ATOM      7 C3   GBICX   1       0.400  -1.292   0.000  1.00 20.00      GBIC C
+ATOM      8 C4   GBICX   1       1.569  -2.057   0.000  1.00 20.00      GBIC C
+ATOM      9 C5   GBICX   1      -2.767  -1.352   0.000  1.00 20.00      GBIC C
+ATOM     10 C6   GBICX   1      -2.787   0.060   0.000  1.00 20.00      GBIC C
+ATOM     11 C7   GBICX   1       1.626   0.821   0.000  1.00 20.00      GBIC C
+ATOM     12 C8   GBICX   1       0.417   0.117   0.000  1.00 20.00      GBIC C
+ATOM     13 N5   GBICX   1       0.883   0.611   0.000  1.00 20.00      GBIC N
+ATOM     14 Cl1  GBICX   1      -4.323   0.863   0.000  1.00 20.00      GBIC CL
+ATOM     15 H1   GBICX   1       5.590  -0.360   0.000  1.00 20.00      GBIC H
+ATOM     16 H2   GBICX   1       5.742   1.354   0.000  1.00 20.00      GBIC H
+ATOM     17 H3   GBICX   1       3.774   2.718   0.000  1.00 20.00      GBIC H
+ATOM     18 H4   GBICX   1       2.191   1.894   0.000  1.00 20.00      GBIC H
+ATOM     19 H5   GBICX   1       3.527  -1.337   0.000  1.00 20.00      GBIC H
+ATOM     20 H6   GBICX   1       1.316  -2.584   0.000  1.00 20.00      GBIC H
+ATOM     21 H7   GBICX   1       1.560  -3.143   0.000  1.00 20.00      GBIC H
+ATOM     22 H8   GBICX   1      -3.710  -1.890   0.000  1.00 20.00      GBIC H
+ATOM     23 H9   GBICX   1       1.655   1.906   0.000  1.00 20.00      GBIC H
+TER      24      GBICX   1 
+CONECT    1    2   15   16
+CONECT    2    1    3    4
+CONECT    3    2   17   18
+CONECT    4    2    5   19
+CONECT    5    4    6   13
+CONECT    6    5    7   20
+CONECT    7    6    8   12
+CONECT    8    7    9   21
+CONECT    9    8   10   22
+CONECT   10    9   11   14
+CONECT   11   10   12   23
+CONECT   12    7   11   13
+CONECT   13    5   12
+CONECT   14   10
+CONECT   15    1
+CONECT   16    1
+CONECT   17    3
+CONECT   18    3
+CONECT   19    4
+CONECT   20    6
+CONECT   21    8
+CONECT   22    9
+CONECT   23   11
+END
