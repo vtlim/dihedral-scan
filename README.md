@@ -112,7 +112,8 @@ However, instead of installing the package, you can download the relevant module
         * Name of input PDB
         * Where output PDBs are written
         * Atom numbers of whole group to be rotated
-        * Atom numbers of the four atoms to define dihedral
+        * Atom numbers of the four atoms to define dihedral. 
+            * NOTE: Order matters. Atoms should be listed in order, with central atoms in middle. If [A B C D] does not work, try [D C B A].
     * Edit and run `02_pdbPsiInput.sh`
         * Main directory location
         * Name of theory subdirectory

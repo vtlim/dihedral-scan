@@ -16,7 +16,7 @@ proc set_dihedral {molid movesel newval ind1 ind2 ind3 ind4} {
   set bsel1 [atomselect $tmpmolid "index $ind2"]
   set bsel2 [atomselect $tmpmolid "index $ind3"]
 
-  ### Get degree to move by, and the movie matrix.
+  ### Get degree to move by, and the move matrix.
   set delta [expr $dihedral - $newval]
   set mat [trans bond [lindex [$bsel1 get {x y z}] 0] [lindex [$bsel2 get {x y z}] 0] $delta deg]
 
@@ -36,7 +36,7 @@ set guanidino [atomselect 0 "index 21 12 10 11 20 19 18"]
 
 for {set angle 0} {$angle < 360} {incr angle 5} {
     set_dihedral 0 $guanidino $angle 10 9 8 7
-    mkdir ../dihed_psi4/$angle
-    [atomselect top "all"] writepdb ../dihed_psi4/$angle/dihed-$angle.pdb
+    mkdir ../dihed_namd/$angle
+    [atomselect top "all"] writepdb ../dihed_namd/$angle/dihed-$angle.pdb
 }
 

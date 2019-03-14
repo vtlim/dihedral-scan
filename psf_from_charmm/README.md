@@ -1,5 +1,5 @@
 # Generating PSF file from CHARMM
-Last updated: Mar 07 2019  
+Last updated: Mar 12 2019  
 
 Generate PSF/PDB files for NAMD using CHARMM instead of VMD. 
 VMD does not have lone pair support on halogen atoms in accordance with CGenFF v2.2.0. 
@@ -20,6 +20,10 @@ An example is provided in this directory.
 
 4. Edit the filenames for input PDB and output PSF/PDB. Then call the script (use your own charmm executable):
     * `/data11/home/limn1/charmm/c40b1_gnu/exec/gnu/charmm -i namdpsf-from-charmm.inp > psfgen.out`
+
+5. Important! Make sure the lone pair and its parent has a bond listed explicitly in PSF. Else add manually: 
+    * increment NBOND count, 
+    * add two extra bond indices (PSF starts at one).
 
 ## Contents
 ```
