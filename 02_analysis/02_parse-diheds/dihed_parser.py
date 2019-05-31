@@ -235,13 +235,8 @@ def plot_dihed(x, y, pdict, toSave, toShow, x2=None, y2=None):
     plt.ioff()
     plt.close()
 
-
-# ------------------------- Script ---------------------------- #
-
-def main(**kwargs):
-
-    ### QM
-    ang_qm, ene_qm = cat_qm(opt['qdir'], opt['qfile'], opt['theory'])
+def process_plot_qm(qdir, qfile, qtheory, savefig, showfig):
+    ang_qm, ene_qm = cat_qm(qdir, qfile, qtheory)
 
     indices = np.nonzero(ene_qm)
     ang_qm = ang_qm[indices]
@@ -251,38 +246,58 @@ def main(**kwargs):
     rel_ene_qm = [627.5095*(i - minE) for i in ene_qm] # convert Hartrees -> kcal/mol
 
     pdict = {}
-    pdict['title'] = "Dihedral Scan for 2GBI Neutral - QM"
+    pdict['title'] = "Dihedral Scan - QM"
     pdict['figname'] = "plot_relDihed-qm.png"
-    plot_dihed( ang_qm, rel_ene_qm, pdict, opt['save'], opt['show'] )
+    plot_dihed( ang_qm, rel_ene_qm, pdict, savefig, showfig)
+
+    return ang_qm, ene_qm, rel_ene_qm
+
+def process_plot_mm(mdir, mfile, force_const):
+    ang_mm, ene_mm = cat_mm(mdir, mfile)
+
+    ### Subtract actual energies minus restraint energies.
+    if force_const is not None:
+        xact, rpe = subtract_restraint(mdir+'/diheds-from-coor.dat', force_const)
+        ene_mm = np.subtract(ene_mm,rpe)
+
+    ### Take relative energies from minimum.
+    minE = min(ene_mm)
+    rel_ene_mm = [i - minE for i in ene_mm]
+
+    ### Plot MM results.
+    pdict = {}
+    pdict['title'] = "Dihedral Scan - MM"
+    pdict['figname'] = "plot_relDihed-mm.png"
+    plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'] )
+
+    return ang_mm, ene_mm, rel_ene_mm
 
 
-    ### MM
-    if not opt['qm_only']:
-        ang_mm, ene_mm = cat_mm(opt['mdir'], opt['mfile'])
+# ------------------------- Script ---------------------------- #
 
-        ### Subtract actual energies minus restraint energies.
-        if opt['fConst'] is not None:
-            xact, rpe = subtract_restraint(opt['mdir']+'/diheds-from-coor.dat',opt['fConst'])
-            ene_mm = np.subtract(ene_mm,rpe)
+def main(**kwargs):
 
-        ### Take relative energies from minimum.
-        minE = min(ene_mm)
-        rel_ene_mm = [i - minE for i in ene_mm]
+    if opt['qm_only']:
+        ang_qm, ene_qm, rel_ene_qm = process_plot_qm(opt['qdir'], opt['qfile'], opt['theory'], opt['save'], opt['show'])
+        return
+    elif opt['mm_only']:
+        ang_mm, ene_mm, rel_ene_mm = process_plot_mm(opt['mdir'], opt['mfile'], opt['fConst'])
+        return
+    else:
+        ang_qm, ene_qm, rel_ene_qm = process_plot_qm(opt['qdir'], opt['qfile'], opt['theory'], opt['save'], opt['show'])
+        ang_mm, ene_mm, rel_ene_mm = process_plot_mm(opt['mdir'], opt['mfile'], opt['fConst'])
 
-        ### Plot MM results.
-        pdict['title'] = "Dihedral Scan for 2GBI Neutral - MM"
-        pdict['figname'] = "plot_relDihed-mm.png"
-        plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'] )
+    ### Plot both QM and MM results.
+    pdict = {}
+    pdict['title'] = "Dihedral Scan
+    pdict['figname'] = "plot_relDihed.png"
+    pdict['label1'] = "MM (NAMD, CGenFF)"      # MM line label
+    pdict['label2'] = "QM (Psi4, MP2/6-31G*)"  # QM line label
+    #pdict['label2'] = "QM (Psi4, MP2/def2-tzvp)"  # QM line label
+    pdict['color1'] = 'b'      # MM line color
+    pdict['color2'] = 'r'      # QM line color
+    plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'], ang_qm, rel_ene_qm)
 
-        ### Plot both QM and MM results.
-        pdict['title'] = "Dihedral Scan for 2GBI Neutral"
-        pdict['figname'] = "plot_relDihed.png"
-        pdict['label1'] = "MM (NAMD, CGenFF)"      # MM line label
-        pdict['label2'] = "QM (Psi4, MP2/6-31G*)"  # QM line label
-        #pdict['label2'] = "QM (Psi4, MP2/def2-tzvp)"  # QM line label
-        pdict['color1'] = 'b'      # MM line color
-        pdict['color2'] = 'r'      # QM line color
-        plot_dihed( ang_mm, rel_ene_mm, pdict, opt['save'], opt['show'], ang_qm, rel_ene_qm)
 
     ### Write out results.
     if not os.path.exists("summary.dat"):
@@ -338,6 +353,8 @@ if __name__ == "__main__":
                         help="Name of directory containing MM angles")
     parser.add_argument("--mfile",
                         help="Name of MM output file (should be same name for all angles)")
+    parser.add_argument("--mm_only", action="store_true", default=False,
+                        help="Only process MM results.")
     parser.add_argument("-k", "--fConst", type=float,
                         help="Value of force constant used to restrain dihedral"
                              " in MM calculation. NOTE: This is NOT currently "
